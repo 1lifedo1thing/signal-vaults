@@ -292,9 +292,12 @@ def merge_knowledge(username, parts, days, total, raw_msgs=None):
 def render_text(digest):
     m = digest["meta"]
     gname = collector.group_name(m["raw_chat"]) if m.get("raw_chat") else m["chat"]
-    lines = ["群聊: " + gname + (" (" + m["days_label"] + ")" if m.get("days_label") else ""),
-             "共计 {} 条消息 (近{}天) | 生成 {}".format(
-                 m["total"], m["days"], time.strftime("%Y-%m-%d %H:%M")),
+    kind = m.get("kind", "wechat")
+    head = "信息源" if kind == "source" else "群聊"
+    unit = "条条目" if kind == "source" else "条消息"
+    lines = ["{}: {}".format(head, gname) + (" (" + m["days_label"] + ")" if m.get("days_label") else ""),
+             "共 {} {} (近{}天) | 生成 {}".format(
+                 m["total"], unit, m["days"], time.strftime("%Y-%m-%d %H:%M")),
              "", "## AI 前沿知识精选"]
     for i, k in enumerate(digest["hot"], 1):
         lines.append("{}. **{}**  — {}".format(i, k.get("topic"), k.get("who", "")))

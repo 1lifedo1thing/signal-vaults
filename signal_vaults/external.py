@@ -48,6 +48,7 @@ def _digest_for_source(source_name, items, days):
     return {"hot": hot, "resources": res,
             "meta": {"chat": source_name, "days": days, "total": len(items),
                      "days_label": "近{}天".format(days),
+                     "kind": "source",
                      "raw_chat": None, "thumbs": [], "files": []}}
 
 
