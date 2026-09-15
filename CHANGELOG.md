@@ -10,6 +10,7 @@
 - **Reddit 信息源**：.rss Atom feed（json 端点被反爬硬挡，勿回退），默认覆盖 LocalLLaMA / programming / machinelearning / **ycombinator / startups**（YC 生态）；`REDDIT_PROXY` 代理支持，子版块限流间隔
 - **长文搬运/抄袭检测**（`signal-vaults check <文章.md>`）：LLM 从自有文章提取指纹探针句（逐字子串校验，防 LLM 改写编造）→ 搜狗微信 + DuckDuckGo 精确短语搜索 → 抓取候选页做 shingle 包含度比对 + 探针命中率判定 → 疑似搬运推送告警卡片（Discord/飞书，`--no-push` 仅本地报告）
 - **`python -m signal_vaults` 入口**：补齐 `__main__.py`
+- **GitHub Actions 云端定时**（`.github/workflows/daily-hn-reddit.yml`）：每天北京时间 08:00 自动推送 HN + Reddit 日报；Secrets 未配置时自动空转不报错；美国机房直连免代理；微信日报保持仅本地（隐私红线）
 
 ### Notes
 

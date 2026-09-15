@@ -35,6 +35,18 @@
 - **搬运检测**（v1.1.0）：对自有长文提取「指纹探针句」（逐字子串校验防 LLM 改写），多平台精确搜索（搜狗微信 / DuckDuckGo）后抓页比对 shingle 包含度，疑似搬运推送告警卡片。
 - **Reddit 代理**：`REDDIT_PROXY`（缺省回落 `PUSH_PROXY`）；json 端点被反爬硬挡，仅走 .rss Atom feed，子版块间限流间隔。
 
+### 云端定时推送（GitHub Actions，可选）
+
+fork 本仓库 → Settings → Secrets and variables → Actions 添加：
+
+| Secret | 必填 | 说明 |
+|---|---|---|
+| `LLM_API_KEY` / `LLM_BASE_URL` / `LLM_MODEL` | 是 | OpenAI 兼容端点 |
+| `DISCORD_BOT_TOKEN` / `DISCORD_CHANNEL_ID` | 推 Discord 才填 | |
+| `FEISHU_APP_ID` / `FEISHU_APP_SECRET` / `FEISHU_TARGET_CHAT` | 推飞书才填 | |
+
+配置后每天北京时间 08:00 自动推送 HN + Reddit 日报（Actions 机房在海外，无需代理；微信日报因隐私红线只在本地跑；未配置 Secrets 时 workflow 自动空转）。
+
 ## 快速开始
 
 ```bash
