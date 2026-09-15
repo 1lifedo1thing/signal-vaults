@@ -6,6 +6,8 @@
   python -m signal_vaults groups                    # 列出可搜索的群/会话
   python -m signal_vaults daily [days] [群关键词...] # 群知识日报
   python -m signal_vaults mp [days]                 # 公众号文章日报
+  python -m signal_vaults hn / reddit [days]        # HN(YC) / Reddit 日报
+  python -m signal_vaults check <文章.md> [--no-push] # 长文搬运/抄袭检测
 """
 import sys
 import os
@@ -93,6 +95,15 @@ def main(argv=None):
     if cmd == "feishu":
         from . import feishu
         return feishu.start_ws()
+
+    if cmd == "check":
+        from . import plagiarism
+        if len(argv) < 2:
+            print("用法: signal-vaults check <文章.md> [--no-push]")
+            return 1
+        push = "--no-push" not in argv
+        path = argv[1]
+        return plagiarism.run_check(path, push=push)
 
     if cmd in ("hn", "hacker-news", "hackernews", "reddit"):
         from . import external

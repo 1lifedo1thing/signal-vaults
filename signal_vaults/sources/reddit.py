@@ -27,7 +27,9 @@ class RedditSource(Source):
     name = "reddit"
 
     def __init__(self, subs=None, sort="top", timeframe="day", limit_per_sub=25):
-        self.subs = subs or ["LocalLLaMA", "programming", "machinelearning"]
+        # 默认含 YC 生态: r/ycombinator + r/startups (HN 即 YC 的新闻站, 已单独覆盖)
+        self.subs = subs or ["LocalLLaMA", "programming", "machinelearning",
+                             "ycombinator", "startups"]
         self.sort = sort            # top | new | hot
         self.timeframe = timeframe  # day | week | month (仅 top 有效)
         self.limit_per_sub = limit_per_sub

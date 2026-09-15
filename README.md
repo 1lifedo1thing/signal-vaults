@@ -18,15 +18,22 @@
 | `signal-vaults groups [关键词]` | 列出群与会话（供 Agent 选择目标群） |
 | `signal-vaults daily [days] [群...]` | 群聊知识日报：分片 LLM 提炼 → 知识点 + 术语科普 + 资源链接，带缓存与重试 |
 | `signal-vaults mp [days]` | 公众号文章日报：抓取推送 → LLM 写推荐语 → 输出 |
+| `signal-vaults hn [days]` | Hacker News（YC）日报：官方 API 拉取 → LLM 精选 → 推送 |
+| `signal-vaults reddit [days] [子版...]` | Reddit 日报：默认含 LocalLLaMA / programming / machinelearning / ycombinator / startups |
+| `signal-vaults check <文章.md>` | 长文搬运/抄袭检测：LLM 指纹探针 → 搜狗微信+DDG 精确搜索 → 相似度比对 → 告警卡片（`--no-push` 仅本地报告） |
 
 输出默认写到 `work/know_*.txt`；配置了飞书 / Discord 环境变量则同时推送。
 
-## 核心能力（v1.3）
+## 核心能力（v1.1.0）
+
+- **多信息源统一管线**：微信群聊 / 公众号 / Hacker News（YC）/ Reddit 全部走同一套「采集 → 分片 LLM 提炼 → 卡片渲染 → 双端推送」。
 
 - **飞书卡片推送**：1.0 结构 interactive 卡片，格式定稿——首行群名+统计 → 编号知识点（标题/摘要/署名/📎原文引用块）→ 资源/链接区（纯可点击链接）。WebSocket 长连接 bot 支持群内 @bot 交互。
 - **原文溯源**（`SIG_VAULTS_TRACE=1`）：LLM 提炼时引用消息编号（refs），代码校验必须是本群真实存在的消息 ID，防编造；卡片内逐字展示被引用的消息原文（只显示 refs 指向的消息，不带邻居）。
 - **链接校验**：只放行聊天记录中真实出现过的域名；LLM 凭空编造的链接一律拦截且不出现在卡片里。
 - **群名解析**：卡片永不显示 chatroom ID，一律解析为群名称。
+- **搬运检测**（v1.1.0）：对自有长文提取「指纹探针句」（逐字子串校验防 LLM 改写），多平台精确搜索（搜狗微信 / DuckDuckGo）后抓页比对 shingle 包含度，疑似搬运推送告警卡片。
+- **Reddit 代理**：`REDDIT_PROXY`（缺省回落 `PUSH_PROXY`）；json 端点被反爬硬挡，仅走 .rss Atom feed，子版块间限流间隔。
 
 ## 快速开始
 

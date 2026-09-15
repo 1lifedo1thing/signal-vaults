@@ -2,6 +2,20 @@
 
 本文件记录 signal-vaults 的全部迭代历史。最新在前。
 
+## v1.1.0 (2026-09) — 多信息源 + 搬运检测
+
+### Added
+
+- **Hacker News（YC）信息源**：官方 Firebase API 拉取 → LLM 精选 → 统一管线推送；Firebase 被拒时自动回落 Algolia 镜像
+- **Reddit 信息源**：.rss Atom feed（json 端点被反爬硬挡，勿回退），默认覆盖 LocalLLaMA / programming / machinelearning / **ycombinator / startups**（YC 生态）；`REDDIT_PROXY` 代理支持，子版块限流间隔
+- **长文搬运/抄袭检测**（`signal-vaults check <文章.md>`）：LLM 从自有文章提取指纹探针句（逐字子串校验，防 LLM 改写编造）→ 搜狗微信 + DuckDuckGo 精确短语搜索 → 抓取候选页做 shingle 包含度比对 + 探针命中率判定 → 疑似搬运推送告警卡片（Discord/飞书，`--no-push` 仅本地报告）
+- **`python -m signal_vaults` 入口**：补齐 `__main__.py`
+
+### Notes
+
+- HN 即 YC（Y Combinator）旗下新闻站，YC 生态由 HN + r/ycombinator 共同覆盖
+- 探针提取与相似度裁判复用 `LLM_BACKEND=auto`（API 优先，无 key 回落 Codex CLI），零新增配置
+
 ## v1.0.0 (2026-09) — 首个正式发布
 
 ### Added
